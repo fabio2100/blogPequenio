@@ -26,7 +26,7 @@ new Vue({
         month: 'numeric',
         day: 'numeric',
       }
-      axios.get('http://blogcito-fabio.herokuapp.com/api/comentarios')
+      axios.get('https://blogcito-fabio.herokuapp.com/api/comentarios')
       .then(
         function(response){
           self.listaComentarios = []
