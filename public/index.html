@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comentarios desde MongoDB</title>
+  <script src="https://kit.fontawesome.com/bcded251a0.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+  
+</head>
+<body>
+  <div id="app">
+    <button class="btn btn-dark" @click='recuperarComentarios'>Recuperar comentarios</button>
+    <button class="btn btn-dark" @click='mostrarSubirComentario'>Cargar comentario</button>
+    <div v-if="cargarComentarios">
+      <table class='table table-dark table-striped table-hover'>
+        <thead>
+          <th style='width: 25%;'>Autor</th>
+          <th style='width: 50%;'>Comentario</th>
+          <th style='width: 12%;'>Fecha de carga</th>
+          <th style='width: 12%;' colspan='2' align="center">Acciones</th>
+        </thead>
+        <tbody>
+          <tr v-for='(i,index) in listaComentarios'>
+            <td v-if='noEditable!==index'>{{i.autor}}</td>
+            <td v-else><input type="text" v-model='comentarioSeleccionado.autor'></td>
+            <td v-if='noEditable!==index'>{{i.descripcion}}</td>
+            <td v-else><input type="text" v-model='comentarioSeleccionado.descripcion'><button @click='modificarComentario'><i class="far fa-check-circle"></i></button></td>
+            <td >{{i.fechaAMostrar}}</td>
+            <td><i class="fas fa-edit" @click='mostrarEditarComentario(index,i.autor,i.descripcion,i._id)' style="cursor:pointer;"></i></td>
+            <td><i class="far fa-trash-alt" @click='borrarComentario(i._id)' style="cursor:pointer;"></i></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div v-if='subirComentarios'>
+      <div class="form-group">
+        <input type="text" name="autor" placeholder="Autor" v-model='autorNuevoComentario' class='form-control'>
+        <input type="text" name="comentario" placeholder="Comentario" v-model='descripcionNuevoComentario' class="form-control">
+        <button class="btn btn-dark btn-lg" @click='subirComentario'>Agregar comentario</button>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="index.js"></script>
+</body>
+</html>
