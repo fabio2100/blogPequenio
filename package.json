@@ -4,7 +4,7 @@
   "description": "Pequeño blog con NodeJS y MongoDB",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
   "author": "Fabio Squizzato",
   "license": "ISC",
