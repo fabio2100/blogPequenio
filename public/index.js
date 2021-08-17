@@ -50,7 +50,7 @@ new Vue({
         'autor':this.autorNuevoComentario,
         'descripcion':this.descripcionNuevoComentario
       }
-      let res = await axios.post('http://blogcito-fabio.herokuapp.com/api/comentarios',comentarioJson)
+      let res = await axios.post('https://blogcito-fabio.herokuapp.com/api/comentarios/',comentarioJson)
       .then(function(response){
         self.autorNuevoComentario='';
         self.descripcionNuevoComentario='';
@@ -59,7 +59,7 @@ new Vue({
     },
     borrarComentario : async function(id){
       var self = this;
-      let res = await axios.delete('http://blogcito-fabio.herokuapp.com/api/comentarios/'+id)
+      let res = await axios.delete('https://blogcito-fabio.herokuapp.com/api/comentarios/'+id)
       .then(function(response){
         //console.log(response)
         self.recuperarComentarios();
@@ -79,7 +79,7 @@ new Vue({
         'descripcion':this.comentarioSeleccionado.descripcion,
         '_id':this.comentarioSeleccionado._id
       }
-      let resultado = await axios.put('http://localhost:8080/api/comentarios/',data);
+      let resultado = await axios.put('https://blogcito-fabio.herokuapp.com/api/comentarios/',data);
       this.noEditable=-1;
       this.recuperarComentarios();
     }
