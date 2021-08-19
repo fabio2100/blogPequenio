@@ -51,7 +51,6 @@ new Vue({
       axios.get('http://localhost:8080/api/comentarios')
       .then(
         function(response){
-          console.log(response.data)
           self.listaComentarios = []
           response.data.forEach(element => {
             let fecha = new Date(element.fechaCarga);
@@ -69,8 +68,6 @@ new Vue({
     },
     subirComentario : async function(){
       var self = this;
-      console.log(this.autorNuevoComentario)
-      console.log(this.descripcionNuevoComentario);
       let comentarioJson = {
         'autor':this.autorNuevoComentario,
         'descripcion':this.descripcionNuevoComentario
@@ -86,7 +83,6 @@ new Vue({
       var self = this;
       let res = await axios.delete('http://localhost:8080/api/comentarios/'+id)
       .then(function(response){
-        //console.log(response)
         self.recuperarComentarios();
       })
     },
@@ -141,7 +137,6 @@ new Vue({
       axios.post('http://localhost:8080/auth/',{'nombre':this.usuario,'password':this.password})
       .then(
         function(response){
-          console.log(response.status)
           if (response.status==200){
             self.autenticacionCorrecta = true;
             document.cookie = "nombre="+response.data.nombre+";max-age=600";

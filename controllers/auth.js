@@ -21,7 +21,6 @@ const ingresar = async (req, res=response)=>{
       })
     }
     const token =await generarJWT(usuario._id);
-    console.log(token)
     res.json({
       msg:'Login OK',
       token,nombre

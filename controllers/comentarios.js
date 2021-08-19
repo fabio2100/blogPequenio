@@ -7,7 +7,6 @@ const comentariosGet = async function(req, res){
 
 const comentariosPost = async function(req, res){
   const body = req.body;
-  console.log(req.usuario,'este es el q estamos mandando')
   const usuario = req.usuario
   const data = {
     autor :body.autor,
@@ -17,7 +16,6 @@ const comentariosPost = async function(req, res){
   };
 
   const comentario = new comentarios(data);
-  console.log(comentario);
   await comentario.save();
   res.status(201).json({comentario})
 }
