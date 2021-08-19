@@ -22,7 +22,7 @@ new Vue({
   },
   created: function(){
     var self = this;
-    axios.post('http://localhost:8080/validarToken')
+    axios.post('https://blogcito-fabio.herokuapp.com//validarToken')
     .then(function(data){
       self.autenticacionCorrecta = true;
       self.usuario = self.getCookie('nombre');
@@ -48,7 +48,7 @@ new Vue({
         month: 'numeric',
         day: 'numeric',
       }
-      axios.get('http://localhost:8080/api/comentarios')
+      axios.get('https://blogcito-fabio.herokuapp.com//api/comentarios')
       .then(
         function(response){
           self.listaComentarios = []
@@ -72,7 +72,7 @@ new Vue({
         'autor':this.autorNuevoComentario,
         'descripcion':this.descripcionNuevoComentario
       }
-      let res = await axios.post('http://localhost:8080/api/comentarios/',comentarioJson)
+      let res = await axios.post('https://blogcito-fabio.herokuapp.com//api/comentarios/',comentarioJson)
       .then(function(response){
         self.autorNuevoComentario='';
         self.descripcionNuevoComentario='';
@@ -81,7 +81,7 @@ new Vue({
     },
     borrarComentario : async function(id){
       var self = this;
-      let res = await axios.delete('http://localhost:8080/api/comentarios/'+id)
+      let res = await axios.delete('https://blogcito-fabio.herokuapp.com//api/comentarios/'+id)
       .then(function(response){
         self.recuperarComentarios();
       })
@@ -100,7 +100,7 @@ new Vue({
         'descripcion':this.comentarioSeleccionado.descripcion,
         '_id':this.comentarioSeleccionado._id
       }
-      let resultado = await axios.put('http://localhost:8080/api/comentarios/',data);
+      let resultado = await axios.put('https://blogcito-fabio.herokuapp.com//api/comentarios/',data);
       this.noEditable=-1;
       this.recuperarComentarios();
     },
@@ -113,7 +113,7 @@ new Vue({
     crearUsuario :async function(){
       var self = this;
       if(this.password == this.passwordVerificacion && this.password.length>3){
-        axios.post('http://localhost:8080/login/',{'nombre':this.usuario,'password':this.password})
+        axios.post('https://blogcito-fabio.herokuapp.com//login/',{'nombre':this.usuario,'password':this.password})
         .then(function(response){
           self.usuarioMismoNombre = false;
           self.usuarioCreado = true;
@@ -134,7 +134,7 @@ new Vue({
     },
     ingresarUsuario : function(){
       var self = this;
-      axios.post('http://localhost:8080/auth/',{'nombre':this.usuario,'password':this.password})
+      axios.post('https://blogcito-fabio.herokuapp.com//auth/',{'nombre':this.usuario,'password':this.password})
       .then(
         function(response){
           if (response.status==200){
