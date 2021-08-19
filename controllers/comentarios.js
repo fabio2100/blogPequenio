@@ -1,16 +1,19 @@
 const comentarios = require("../models/comentario");
 
 const comentariosGet = async function(req, res){
-  const todosLosComentarios = await comentarios.find().sort({fechaCarga:-1});
+  const todosLosComentarios = await comentarios.find().sort({fechaCarga:-1}).populate('usuario','nombre');
   res.json(todosLosComentarios);
 };
 
 const comentariosPost = async function(req, res){
   const body = req.body;
+  console.log(req.usuario,'este es el q estamos mandando')
+  const usuario = req.usuario
   const data = {
     autor :body.autor,
     descripcion : body.descripcion,
     fechaCarga : new Date(),
+    usuario
   };
 
   const comentario = new comentarios(data);
@@ -22,6 +25,7 @@ const comentariosPost = async function(req, res){
 const comentariosPut = async function(req,res){
   const data = req.body;
   data.fechaCarga = new Date();
+  data.usuario = req.usuario;
   const _id = data._id;
   let resultado = await comentarios.findByIdAndUpdate(_id,data);
   res.status(201).json(resultado)

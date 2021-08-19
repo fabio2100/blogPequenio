@@ -9,6 +9,11 @@ const comentarioModel = Schema({
   },
   fechaCarga : {
     type: Date,
+  },
+  usuario: {
+    type: Schema.Types.ObjectId,
+    ref : 'Usuario',
+    required: true
   }
 })
 

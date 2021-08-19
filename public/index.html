@@ -11,13 +11,18 @@
 </head>
 <body>
   <div id="app">
-    <button class="btn btn-dark" @click='recuperarComentarios'>Recuperar comentarios</button>
-    <button class="btn btn-dark" @click='mostrarSubirComentario'>Cargar comentario</button>
+    <button class="btn btn-dark" @click='mostrarVentanaIngresar'>Ingresar</button>
+    <button class="btn btn-dark" @click='mostrarVentanaUsuario'>Nuevo usuario</button>
+    <div v-if='autenticacionCorrecta'>
+      <button class="btn btn-dark" @click='recuperarComentarios'>Recuperar comentarios</button>
+      <button class="btn btn-dark" @click='mostrarSubirComentario'>Cargar comentario</button>
+    </div>
     <div v-if="cargarComentarios">
       <table class='table table-dark table-striped table-hover'>
         <thead>
-          <th style='width: 25%;'>Autor</th>
+          <th style='width: 12%;'>Autor</th>
           <th style='width: 50%;'>Comentario</th>
+          <th style='width: 12%'>Usuario</th>
           <th style='width: 12%;'>Fecha de carga</th>
           <th style='width: 12%;' colspan='2' align="center">Acciones</th>
         </thead>
@@ -27,7 +32,9 @@
             <td v-else><input type="text" v-model='comentarioSeleccionado.autor'></td>
             <td v-if='noEditable!==index'>{{i.descripcion}}</td>
             <td v-else><input type="text" v-model='comentarioSeleccionado.descripcion'><button @click='modificarComentario'><i class="far fa-check-circle"></i></button></td>
-            <td >{{i.fechaAMostrar}}</td>
+            <td v-if='i.usuario'>{{i.usuario.nombre}}</td>
+            <td v-else></td>
+            <td>{{i.fechaAMostrar}}</td>
             <td><i class="fas fa-edit" @click='mostrarEditarComentario(index,i.autor,i.descripcion,i._id)' style="cursor:pointer;"></i></td>
             <td><i class="far fa-trash-alt" @click='borrarComentario(i._id)' style="cursor:pointer;"></i></td>
           </tr>
@@ -41,7 +48,30 @@
         <button class="btn btn-dark btn-lg" @click='subirComentario'>Agregar comentario</button>
       </div>
     </div>
+    <div v-if='ventanaUsuario'>
+      <div class="form-group">
+        <input type="text" name="Usuario" placeholder="Usuario" v-model='usuario' class='form-control'>
+        <input type="password" name="Password" placeholder="Password" v-model='password' class="form-control">
+        <p style='color: red;' v-if='password.length<4'>El password debe tener por lo menos 4 caracteres</p>
+        <input type="password" name="PasswordVerificacion" placeholder="Repetir password" v-model='passwordVerificacion' class="form-control">
+        <p style="color: red;" v-if='password!==passwordVerificacion'>Los passwords no coinciden</p>
+        <button class="btn btn-dark btn-lg" @click='crearUsuario'>Crear usuario</button>
+        <div class="alert alert-danger" v-if='usuarioMismoNombre'>Ya ha sido creado un usuario con ese nombre</div>
+        <div class="alert alert-success" v-if='usuarioCreado'>Usuario registrado exitosamente, aguarde un instante...</div>
+      </div>
+    </div>
+    <div v-if='ventanaIngresar'>
+      <div class="form-group">
+        <input type="text" name="Usuario" placeholder="Usuario" v-model='usuario' class='form-control'>
+        <input type="password" name="Password" placeholder="Password" v-model='password' class="form-control">
+        <button class="btn btn-dark btn-lg" @click='ingresarUsuario'>Acceder</button>
+        <button class="btn btn-dark btn-lg" @click='cerrarSesion'>Cerrar sesión</button>
+        <div class="alert alert-danger" v-if='errorAutenticacion'>Error en la autenticación, vuelva a intentarlo</div>
+        <div class="alert alert-success" v-if='autenticacionCorrecta'>Autenticación correcta, ya puede ingresar a comentar </div>
+       </div>
+    </div>
   </div>
+  
   <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="index.js"></script>
