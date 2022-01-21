@@ -22,7 +22,7 @@ new Vue({
   },
   created: function(){
     var self = this;
-    axios.post('https://blogcito-fabio.herokuapp.com/validarToken')
+    axios.post('http://localhost:8080/validarToken')
     .then(function(data){
       self.autenticacionCorrecta = true;
       self.usuario = self.getCookie('nombre');
@@ -48,13 +48,31 @@ new Vue({
         month: 'numeric',
         day: 'numeric',
       }
-      axios.get('https://blogcito-fabio.herokuapp.com/api/comentarios')
+      axios.get('http://localhost:8080/api/comentarios')
       .then(
         function(response){
-          self.listaComentarios = []
+          self.listaComentarios = [];
+          var ahora = new Date();
           response.data.forEach(element => {
             let fecha = new Date(element.fechaCarga);
-            element.fechaAMostrar = fecha.toLocaleDateString(undefined,options) 
+            var toShow = ahora-fecha;
+            var toShowSeconds = toShow/1000;
+            if(Math.floor(toShow/3.154e+10)){
+              element.fechaAMostrar= Math.floor(toShow/3.154e+10)+" años atrás";          
+            }else if(Math.floor(toShow/2.628e+9)){
+              element.fechaAMostrar = Math.floor(toShow/2.628e+9) + " meses atrás"
+            }else if(Math.floor(toShow/6.048e+8)){
+              element.fechaAMostrar = Math.floor(toShow/6.048e+8) + " semanas atrás"
+            }else if(Math.floor(toShow/8.64e+7)){
+              element.fechaAMostrar = Math.floor(toShow/8.64e+7) + " días atrás"
+            }else if(Math.floor(toShow/3.6e+6)){
+              element.fechaAMostrar = Math.floor(toShow/3.6e+6) + " horas atrás"
+            }else if(Math.floor(toShow/60000)){
+              element.fechaAMostrar = Math.floor(toShow/60000) + " minutos atrás"
+            }else{
+              element.fechaAMostrar = Math.floor(toShowSeconds)+ " segundos atrás";
+            }
+            
             self.listaComentarios.push(element);         
           });
         }
@@ -72,7 +90,7 @@ new Vue({
         'autor':this.autorNuevoComentario,
         'descripcion':this.descripcionNuevoComentario
       }
-      let res = await axios.post('https://blogcito-fabio.herokuapp.com/api/comentarios/',comentarioJson)
+      let res = await axios.post('http://localhost:8080/api/comentarios/',comentarioJson)
       .then(function(response){
         self.autorNuevoComentario='';
         self.descripcionNuevoComentario='';
@@ -81,7 +99,7 @@ new Vue({
     },
     borrarComentario : async function(id){
       var self = this;
-      let res = await axios.delete('https://blogcito-fabio.herokuapp.com/api/comentarios/'+id)
+      let res = await axios.delete('http://localhost:8080/api/comentarios/'+id)
       .then(function(response){
         self.recuperarComentarios();
       })
@@ -100,7 +118,7 @@ new Vue({
         'descripcion':this.comentarioSeleccionado.descripcion,
         '_id':this.comentarioSeleccionado._id
       }
-      let resultado = await axios.put('https://blogcito-fabio.herokuapp.com/api/comentarios/',data);
+      let resultado = await axios.put('http://localhost:8080/api/comentarios/',data);
       this.noEditable=-1;
       this.recuperarComentarios();
     },
@@ -113,7 +131,7 @@ new Vue({
     crearUsuario :async function(){
       var self = this;
       if(this.password == this.passwordVerificacion && this.password.length>3){
-        axios.post('https://blogcito-fabio.herokuapp.com/login/',{'nombre':this.usuario,'password':this.password})
+        axios.post('http://localhost:8080/login/',{'nombre':this.usuario,'password':this.password})
         .then(function(response){
           self.usuarioMismoNombre = false;
           self.usuarioCreado = true;
@@ -134,7 +152,7 @@ new Vue({
     },
     ingresarUsuario : function(){
       var self = this;
-      axios.post('https://blogcito-fabio.herokuapp.com/auth/',{'nombre':this.usuario,'password':this.password})
+      axios.post('http://localhost:8080/auth/',{'nombre':this.usuario,'password':this.password})
       .then(
         function(response){
           if (response.status==200){
